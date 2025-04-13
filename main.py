@@ -61,3 +61,11 @@ async def create_post(post: PostCreate, db: Session = Depends(get_db)) -> PostRe
 @app.get("/posts/", response_model=List[PostResponse])
 async def posts(db: Session = Depends(get_db)):
     return db.query(Post).all()
+
+@app.get("/users/{name}", response_model=DbUser)
+async def posts(name: str, db: Session = Depends(get_db)):
+    db_user  = db.query(User).filter(User.name == name).first()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail='User not found')
+
+    return db_user

@@ -44,12 +44,16 @@ export default {
         });
     
             console.log('Register success: ' + response.data);
-            this.$emit('handleAuth');
     },
 
         async login() {
-
+            const response = await axios.get(`/api/users/${this.loginName}`)
+            if(response.data) {
+                this.$emit('handleAuth');
+            } else {
+                alert('Пользователь не найден')
+            }
+            }
     }
-}
 }
 </script>

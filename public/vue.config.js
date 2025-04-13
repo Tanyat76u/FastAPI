@@ -1,16 +1,22 @@
-//import { defineConfig } from '@vue/cli-service'
-//export default defineConfig({
-//  transpileDependencies: true
-//})
 const { defineConfig } = require('@vue/cli-service')
+const webpack = require('webpack') // Добавляем импорт webpack
 
 module.exports = defineConfig({
   transpileDependencies: true,
+  
+  configureWebpack: {
+    plugins: [
+      new webpack.DefinePlugin({
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false'
+      })
+    ]
+  },
+
   devServer: {
-    port: 5000, // Должен совпадать с port в launch.json
+    port: 5000,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8000', // Адрес вашего FastAPI бэкенда
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
